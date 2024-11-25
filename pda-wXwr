@@ -1,0 +1,73 @@
+---------------pda to wXwr-------
+#include<iostream>
+#include<string>
+#include<stack>
+using namespace std;
+bool pushDownAutomata(string str) {
+    stack<char> st;
+    int n = str.size();
+    int i = 0;
+    while (i < n && str[i] != 'X') {
+        st.push(str[i]);
+        i++;
+    }
+    if (i == n || str[i] != 'X') {
+        return false;
+    }
+    
+    i++; // Skip to next
+    while (i < n) {
+        if (st.empty()) {
+            return false;
+        }
+        if (st.top() == str[i]) {
+            st.pop();
+        } else {
+            return false;
+        }
+        i++;
+    }
+    return st.empty();
+}
+bool validate (string str){
+    for (int i = 0;i<str.size();i++){
+        if(str[i]!='a' && str[i]!='b' && str[i]!='X'){
+            return false;
+        }
+    }
+    return true;
+}
+int main() {
+    string str;
+    int choice;
+    do{
+        cout << "\n\n *** Pushdown Automaton Simulation for w X wR Menu ***\n";
+        cout<<"\n\n Press 1 for simulating a string.\n";
+        cout<<"Press 2 for exit.\n";
+        cout<<"Enter your choice : ";
+        cin>>choice;
+        switch(choice){
+            case 1:
+                cout<<"\n Enter a string : ";
+                cin>>str;
+                if(validate(str)){
+                    if(pushDownAutomata(str)){
+                        cout<<"\n\nString is accepted\n";
+                    }
+                    else{
+                        cout<<"\n\nString is not accepted.\n";
+                    }
+                }else{
+                cout<<"\nString must in the format of w X w^r where w is string consist of only a's and b's w^r is reverse of w which is seperated from w with X\n";
+                }
+                break;
+            case 2:
+                cout<<"Exiting the program ...!";
+                break;
+            default:
+                cout<<"Enter a valid choice \n";
+        }
+    }while(choice!=2);
+    return 0;
+}
+
