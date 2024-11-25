@@ -1,0 +1,73 @@
+--------------------pda  anbn-----
+#include<iostream>
+#include<string>
+#include<stack>
+using namespace std;
+bool pushDownAutomata(string str){
+    int n=str.size();
+    stack<char> st;
+    if(n%2 == 1){
+        return false;
+    }
+    for(int i = 0;i<n;i++){
+        char c=str[i];
+        if(c=='a'){
+            st.push(c);
+        }
+        else if(c=='b'){
+            if(st.empty()){
+                return false;
+            }else{
+                st.pop();
+            }
+        }
+    }
+    if(!st.empty()){
+        return false;
+    }else{
+        return true;
+    }
+}
+bool validate(string str){
+    for (int i = 0; i<str.size();i++){
+        if(str[i]!='a' && str[i]!='b'){
+            return false;
+        }
+    }
+    return true;
+}
+
+int main(){
+    string st;
+    int choice;
+    do{
+        cout<<"\n\nPress 1 for simulation of string for PDA(a^n b^n) \n";
+        cout<<"Press 2 for exit. \n";
+        cout<<"Enter your choice : ";
+        cin>>choice;
+        switch(choice){
+            case 1:
+                cout<<"\n Enter a string : ";
+                cin>>st;
+                if(validate(st)){
+                    if(pushDownAutomata(st)){
+                        cout<<"String is accepted.";
+                    }
+                    else{
+                        cout<<"String is not accepted";
+                    }
+                }
+                else{
+                    cout<<"\nString must contain only a's and b's .";
+                }
+                break;
+            case 2:
+                cout<<"\nExiting the program...";
+                break;
+            default:
+                cout<<"\n Enter a valid choice ...";
+        }
+    }while(choice!=2);
+    return 0;
+}
+
