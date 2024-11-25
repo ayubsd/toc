@@ -1,0 +1,90 @@
+-----------------------even-even---------------
+#include<iostream>
+#include<string>
+using namespace std;
+bool finiteAutomata(string str){
+    int size = str.size();
+    string state = "q1";
+    char c;
+    for(int i =0;i<size;i++){
+        c=str[i];
+        if(state=="q1"){
+            if(c=='a'){
+                state="q2";
+            }
+            else{
+                state="q3";
+            }
+        }
+        else if(state=="q2"){
+            if(c=='a'){
+                state="q1";
+            }
+            else{
+                state="q4";
+            }
+        }
+        else if(state=="q3"){
+            if(c=='a'){
+                state="q4";
+            }
+            else{
+                state="q1";
+            }
+        }
+        
+        else if(state == "q4"){
+            if(c=='a'){
+                state="q3";
+            }
+            else{
+                state="q2";
+            }
+        }
+    }
+    return state=="q1";
+}
+
+bool validate(string str){
+    for(int i=0;i<str.size();i++){
+        char c=str[i];
+        if(c!='a' && c!='b'){
+            return false;
+        }
+    }
+    return true;
+}
+int main(){
+	cout<<"Finite Automata for regular expression a(a+b)*b \n";
+    string str;
+    int ch;
+    do {
+        cout << "\n\n ----------------------------\n";
+        cout << "Press 1 for validating a string : \n";
+        cout << "Press 2 for exit : \n";
+        cout << "Enter your choice : ";
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                cout << "\nEnter a string : \n\n";
+                cin >> str;
+                if (validate(str)) {
+                    if (finiteAutomata(str)) {
+                        cout << "String you have entered is accepted.\n";
+                    } else {
+                        cout << "String is not accepted.\n";
+                    }
+                } else {
+                    cout << "The string must contain only a's and b's...\n";
+                }
+                break;
+            case 2:
+                cout << "Exiting program...\n";
+                break;
+            default:
+                cout << "Enter a valid choice...\n\n";
+        }
+    } while (ch != 2);
+    return 0;
+}
