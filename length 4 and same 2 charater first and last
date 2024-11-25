@@ -1,0 +1,147 @@
+--------------------------- consisting of all strings (of length 4 or more) having first two characters the same as the last two----------
+
+#include <iostream>
+#include <string>
+using namespace std;
+bool finiteAutomata(string str) {
+    int size = str.size();
+    string state = "q1";
+    for (int i = 0; i < size; i++) {
+        char c = str[i];
+        
+        if (state == "q1") {
+            if (c == 'a') {
+                state = "q2";
+            } else {
+                state = "q9";
+            }
+        }
+        else if (state == "q2") {
+            if (c == 'b') {
+                state = "q6";
+            } else {
+                state = "q3";
+            }
+        }
+        else if (state == "q3" && c == 'a') {
+            state = "q4";
+        } 
+        else if (state == "q4") {
+            if(c == 'b'){
+                state = "q3";
+            }
+            else{
+                state = "q5";
+            }
+        }
+        else if (state == "q5") {
+            if (c == 'a') {
+                state = "q5";
+            } else {
+                state = "q3";
+            }
+        }
+        else if (state == "q6" && c == 'a') {
+            state = "q7";
+        } 
+        else if (state == "q7") {
+            if (c == 'a') {
+                state = "q7";
+            } else {
+                state = "q8";
+            }
+        } 
+        else if (state == "q8" && c == 'b') {
+            state = "q6";
+        }
+        else if (state == "q9") {
+            if (c == 'a') {
+                state = "q10";
+            } else {
+                state = "q13";
+            }
+        }
+        else if (state == "q10" && c == 'b') {
+            state = "q11";
+        }
+        else if (state == "q11" && c == 'a') {
+            state = "q12";
+        } 
+        else if (state == "q12") {
+            if (c == 'a') {
+                state = "q10";
+            } 
+            else {
+                state = "q11";
+            }
+        }
+        else if (state == "q13" && c == 'b') {
+            state = "q14";
+        } 
+        else if (state == "q14") {
+            if (c == 'a') {
+                state = "q13";
+            } 
+            else {
+                state = "q15";
+            }
+        } 
+        else if (state == "q15" && c == 'a') {
+            state = "q13";
+        }
+    }
+    
+    cout<<"Current state is : "<<state<<"\n";
+    
+    return (state == "q5" || state == "q8" || state == "q12" || state == "q15");
+}
+
+bool validate(string str) {
+    int size = str.size();
+    for (int i = 0; i < size; i++) {
+        if (str[i] != 'a' && str[i] != 'b') {
+            return false;
+        }
+    }
+    return true;
+}
+
+
+//Drivers code
+int main() {
+    cout << "Finite Automata that accepts all strings over {a, b} in which first two and last two characters are the same.\n";
+    string str;
+    int ch;
+    do {
+        cout << "\n\n ----------------------------\n";
+        cout << "Press 1 for validating a string : \n";
+        cout << "Press 2 for exit : \n";
+        cout << "Enter your choice : ";
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                cout << "\nEnter a string : ";
+                cin >> str;
+                if (validate(str)) {
+                    if (finiteAutomata(str)) {
+                        cout << "\n\nString you have entered is accepted.\n";
+                    } else {
+                        cout << "\nString is not accepted.\n";
+                    }
+                } else {
+                    cout << "\nThe string must contain only 'a' and 'b'...\n";
+                }
+                break;
+
+            case 2:
+                cout << "Exiting program...\n";
+                break;
+
+            default:
+                cout << "Enter a valid choice...\n\n";
+        }
+    } while (ch != 2);
+    
+    return 0;
+}
