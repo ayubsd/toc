@@ -1,0 +1,73 @@
+---------------------turning machine-anbncn-----------------
+#include <iostream>
+#include <cstring>
+using namespace std;
+// Function to print the tape
+void printTape(const char tape[], int size, int head) {
+    for (int i = 0; i < size; i++) {
+        if (i == head) {
+            cout << "[" << tape[i] << "]";
+        } else {
+            cout << " " << tape[i] << " ";
+        }
+    }
+    cout << endl;
+}
+// Turing Machine Simulation for a^n b^n c^n
+bool turingMachineAnBnCn(char tape[], int size) {
+    int head = 0;  // Start at the beginning of the tape
+    int leftMostC = size - 1; // Position of the leftmost 'c'
+    cout << "Initial Tape: ";
+    printTape(tape, size, head);
+    while (true) {
+        // Phase 1: Match 'a' -> replace with 'X', move right to find 'b'
+        if (tape[head] == 'a') {
+            tape[head] = 'X';
+            head++;
+            while (tape[head] != 'b' && head < size) {
+                head++;
+            }
+            if (head >= size || tape[head] != 'b') return false; // No 'b' found
+            // Phase 2: Match 'b' -> replace with 'Y', move right to find 'c'
+            tape[head] = 'Y';
+            head++;
+            while (tape[head] != 'c' && head < size) {
+                head++;
+            }
+            if (head >= size || tape[head] != 'c') return false; // No 'c' found
+            // Phase 3: Match 'c' -> replace with 'Z', move left back to the next 'a'
+            tape[head] = 'Z';
+            leftMostC = min(leftMostC, head); // Update leftmost position of 'c'
+            head--;
+            while (tape[head] != 'X' && head >= 0) {
+                head--;
+            }
+        } else if (tape[head] == 'X') {
+            // If all 'a's are processed, move to the next stage
+            head++;
+        } else {
+            // Phase 4: Check if the entire tape is valid
+            for (int i = 0; i < size; i++) {
+                if (tape[i] != 'X' && tape[i] != 'Y' && tape[i] != 'Z') {
+                    return false; // If any unprocessed 'a', 'b', or 'c' remains
+                }
+            }
+            return true; // All symbols matched
+        }
+        cout << "Tape State: ";
+        printTape(tape, size, head);
+    }
+}
+int main() {
+    char input[100];
+    cout << "Enter a string of the form a^n b^n c^n (n > 0): ";
+    cin >> input;
+    int size = strlen(input);
+    // Simulate the Turing Machine
+    if (turingMachineAnBnCn(input, size)) {
+        cout << "The string is accepted by the Turing Machine!" << endl;
+    } else {
+        cout << "The string is rejected by the Turing Machine." << endl;
+    }
+    return 0;
+}
