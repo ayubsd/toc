@@ -1,0 +1,51 @@
+----------tm-increment-----
+#include <iostream>
+#include <cstring> // For strlen
+using namespace std;
+// Function to simulate the Turing Machine
+void turingMachineIncrement(char tape[], int size) {
+    int head = size - 1; // Start from the last character
+    bool carry = true;   // Simulate the addition of 1
+
+    cout << "Initial Tape: ";
+    for (int i = 0; i < size; ++i) {
+        cout << tape[i];
+    }
+    cout << endl;
+    while (head >= 0 && carry) {
+        if (tape[head] == '0') {
+            tape[head] = '1'; // Flip 0 to 1 and resolve the carry
+            carry = false;
+        } else if (tape[head] == '1') {
+            tape[head] = '0'; // Flip 1 to 0 and continue the carry
+        }
+        head--; // Move left
+    }
+    // If carry still exists, we need to add a new '1' at the beginning
+    if (carry) {
+        cout << "Adding carry at the beginning." << endl;
+        // Shift tape content to the right
+        for (int i = size; i > 0; --i) {
+            tape[i] = tape[i - 1];
+        }
+        tape[0] = '1'; // Add '1' at the beginning
+        size++;        // Increase the size of the tape
+    }
+    cout << "Final Tape (Incremented Number): ";
+    for (int i = 0; i < size; ++i) {
+        cout << tape[i];
+    }
+    cout << endl;
+}
+int main() {
+    char input[100];
+    cout << "Enter a binary number: ";
+    cin >> input;
+
+    int size = strlen(input); // Determine the length of the binary number
+
+    // Simulate the Turing Machine
+    turingMachineIncrement(input, size);
+
+    return 0;
+}
