@@ -1,0 +1,99 @@
+---------------l1=consisting of all strings (of length 4 or more) having first two characters the same as the last two and l2=a(a+b)*b---------------
+
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+// Function to check if a string belongs to L1
+bool isInL1(const string &str) {
+    if (str.length() >= 4) {
+        return str[0] == str[str.length() - 2] && str[1] == str[str.length() - 1];
+    }
+    return false;
+}
+
+// Function to check if a string belongs to L2
+bool isInL2(const string &str) {
+    if (str.length() >= 2 && str[0] == 'a' && str[str.length() - 1] == 'b') {
+        // Check if the middle portion contains only 'a' and 'b'
+        for (size_t i = 1; i < str.length() - 1; ++i) {
+            if (str[i] != 'a' && str[i] != 'b') {
+                return false;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+// Function to check the union of L1 and L2
+bool unionL1L2(const string &str) {
+    return isInL1(str) || isInL2(str);
+}
+// Function to check the intersection of L1 and L2
+bool intersectionL1L2(const string &str) {
+    return isInL1(str) && isInL2(str);
+}
+
+// Function to check concatenation of L1 and L2
+bool concatenationL1L2(const string &str) {
+    for (size_t i = 1; i < str.length(); ++i) {
+        string prefix = str.substr(0, i);
+        string suffix = str.substr(i);
+        if (isInL1(prefix) && isInL2(suffix)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+// Menu-driven program
+int main() {
+    while (true) {
+        cout << "\n--- Menu ---\n";
+        cout << "1. Check if string is in the union of L1 and L2\n";
+        cout << "2. Check if string is in the intersection of L1 and L2\n";
+        cout << "3. Check if string is in the concatenation of L1 and L2\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        int choice;
+        cin >> choice;
+
+        if (choice == 4) {
+            cout << "Exiting the program.\n";
+            break;
+        }
+
+        string input;
+        cout << "Enter the string to check: ";
+        cin >> input;
+
+        switch (choice) {
+            case 1:
+                if (unionL1L2(input)) {
+                    cout << "The string is in the union of L1 and L2.\n";
+                } else {
+                    cout << "The string is NOT in the union of L1 and L2.\n";
+                }
+                break;
+            case 2:
+                if (intersectionL1L2(input)) {
+                    cout << "The string is in the intersection of L1 and L2.\n";
+                } else {
+                    cout << "The string is NOT in the intersection of L1 and L2.\n";
+                }
+                break;
+            case 3:
+                if (concatenationL1L2(input)) {
+                    cout << "The string is in the concatenation of L1 and L2.\n";
+                } else {
+                    cout << "The string is NOT in the concatenation of L1 and L2.\n";
+                }
+                break;
+            default:
+                cout << "Invalid choice. Please try again.\n";
+        }
+    }
+
+    return 0;
+}
