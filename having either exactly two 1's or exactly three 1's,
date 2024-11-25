@@ -1,0 +1,74 @@
+---------------------------having either exactly two 1's or exactly three 1's, not more nor less------------------
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+bool finiteAutomata(string str){
+	string state = "q1";
+	int size = str.size();
+	for(int i = 0; i<size; i++){
+		char c = str[i];
+		if(state=="q1" && c=='1'){
+			state = "q2";
+		}
+		else if(state=="q2" && c=='1'){
+			state = "q3";
+		}
+		else if(state=="q3" && c=='1'){
+			state = "q4";
+		}
+		else if(state=="q4" && c=='1'){
+			return false;
+		}
+	}
+	
+	//final states are state q3 and q4
+	return (state=="q3" || state=="q4");
+}
+bool validate(string str){
+	int size = str.size();
+	for(int i = 0; i<size; i++){
+		if(str[i]!='0' && str[i]!='1'){
+			return false;
+		}
+	}
+	return true;
+}
+// Drivers code
+int main(){
+	cout<<"Finite Automata that accepts all strings over {0, 1} having either exactly two 1's or exactly three 1's\n";
+    string str;
+    int ch;
+    do {
+        cout << "Press 1 for validating a string : \n";
+        cout << "Press 2 for exit : \n";
+        cout << "Enter your choice : ";
+        cin >> ch;
+
+        switch (ch) {
+            case 1:
+                cout << "\nEnter a string : \n\n";
+                cin >> str;
+                if (validate(str)) {
+                    if (finiteAutomata(str)) {
+                        cout << "String you have entered is accepted.\n";
+                    } else {
+                        cout << "String is not accepted.\n";
+                    }
+                } else {
+                    cout << "The string must contain only 0's and 1's...\n";
+                }
+                break;
+
+            case 2:
+                cout << "Exiting program...\n";
+                break;
+
+            default:
+                cout << "Enter a valid choice...\n\n";
+        }
+    } while (ch != 2);
+    
+    return 0;
+}
